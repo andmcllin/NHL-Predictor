@@ -17,7 +17,7 @@ def makePredictions(date):
 
     stats_df = getTeamStats(year)
 
-    statscolumns = stats_df.select_dtypes(include=[np.number])
+    statscolumns = stats_df.select_dtypes(include=[np.number]).drop(columns='Year').columns
 
     df = pd.merge(schedule_df, stats_df, left_on='Home Team', right_on='Team')
     df = pd.merge(df, stats_df, left_on='Visiting Team', right_on='Team', suffixes=('Home', 'Visitor'))

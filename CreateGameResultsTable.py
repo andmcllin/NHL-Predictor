@@ -17,7 +17,7 @@ def createGameResultsCSV(startyear, endyear):
 
         teamstats_df = getTeamStats(year)
 
-        statscolumns = teamstats_df.select_dtypes(include=[np.number])
+        statscolumns = teamstats_df.select_dtypes(include=[np.number]).drop(columns='Year').columns
 
         merged_df = pd.merge(scores_df, teamstats_df, left_on='Home Team', right_on='Team')
         merged_df = pd.merge(merged_df, teamstats_df, left_on='Visiting Team', right_on='Team', suffixes=('Home', 'Visitor'))
