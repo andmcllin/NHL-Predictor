@@ -1,6 +1,7 @@
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup, Comment
+from io import StringIO
 import time
 from sklearn.preprocessing import StandardScaler
 
@@ -13,7 +14,7 @@ def getTeamStats(year):
 
     soup = BeautifulSoup(str(table), 'html.parser')
     table = soup.find('table', attrs={'id': 'stats_adv'})
-    df = pd.read_html(str(table))[0]
+    df = pd.read_html(StringIO(str(table)))[0]
 
     del base_url, req_url, data, soup, table
 

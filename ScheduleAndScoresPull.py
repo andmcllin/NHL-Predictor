@@ -2,6 +2,7 @@ import pandas as pd
 import requests
 import time
 from bs4 import BeautifulSoup
+from io import StringIO
 
 
 def getPastScheduleAndScores(year):
@@ -17,7 +18,7 @@ def getPastScheduleAndScores(year):
 
     if table is not None:
 
-        df = pd.read_html(str(table))[0]
+        df = pd.read_html(StringIO(str(table)))[0]
 
         del df['Att.'], df['LOG'], df['Notes']
 
@@ -52,7 +53,7 @@ def getTodaysSchedule(date):
 
     if table is not None:
 
-        df = pd.read_html(str(table))[0]
+        df = pd.read_html(StringIO(str(table)))[0]
 
         del df['Att.'], df['LOG'], df['Notes']
 
