@@ -46,10 +46,19 @@ def makePredictions(date):
 
     for index in range(len(df)):
         winProb = df.loc[index, 'Prediction']
-        winProb = str(round((winProb * 100), 2))
+        winProb = round((winProb * 100), 2)
         homeTeam = df.loc[index, 'Home Team']
         awayTeam = df.loc[index, 'Visiting Team']
 
-        print('There is a ' + winProb + '%' + ' chance that the ' + homeTeam + ' will defeat the ' + awayTeam)
+        if winProb >= 50:
+            moneyline = (int(np.round(-((100 * winProb) / (winProb - 100)), 0)))
+            moneyline = "-" + str(moneyline)
+        else:
+            moneyline = (int(np.round(-((100 * (winProb - 100)) / (winProb)), 0)))
+            moneyline = "+" + str(moneyline)
+
+        winProb = str(winProb)
+
+        print('There is a ' + winProb + '%' + ' chance that the ' + homeTeam + ' will defeat the ' + awayTeam + '. ' + homeTeam + ': ' + moneyline)
 
     del df, winProb, homeTeam, awayTeam
