@@ -31,7 +31,7 @@ def makePredictions(date):
     df = df[df.columns.drop(list(df.filter(regex='Visitor$')))]
     df.set_index(['Date', 'Visiting Team', 'Home Team'], inplace=True)
     
-    model = load_model('NHLPredictor.h5')
+    model = load_model('NHLPredictor.keras')
 
     predictions = pd.DataFrame(data=model.predict(df), columns=['Prediction'])
 
