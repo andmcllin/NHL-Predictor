@@ -29,6 +29,7 @@ def getTeamStats(year):
     time.sleep(3)
 
     df['Year'] = year
+    df['Team'] = df['Team'].str.replace('\*', '', regex=True)
     df.set_index(['Team', 'Year'], inplace=True)
     df.drop(columns=['Rk'], inplace=True)
 

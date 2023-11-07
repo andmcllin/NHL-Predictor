@@ -39,5 +39,3 @@ def createModel():
     model.fit(X_train, y_train, epochs=100, validation_data=(X_test, y_test), callbacks=callbacks)
 
     del model, callbacks
-
-    return 0

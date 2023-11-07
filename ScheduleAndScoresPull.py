@@ -30,7 +30,7 @@ def getPastScheduleAndScores(year):
             del df['Unnamed: 6']
         if 'Unnamed: 7' in df.columns :
             del df['Unnamed: 7']
-            
+
         return df.dropna()
 
 def getTodaysSchedule(date):   
