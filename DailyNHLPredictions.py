@@ -33,7 +33,10 @@ def makePredictions(date):
     
     model = load_model('NHLPredictor.keras')
 
-    predictions = pd.DataFrame(data=model.predict(df), columns=['Prediction'])
+    try:
+        predictions = pd.DataFrame(data=model.predict(df), columns=['Prediction'])
+    except:
+        raise Exception('No Games Today.')
 
     del model
 
