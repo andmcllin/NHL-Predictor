@@ -6,8 +6,9 @@ from keras.callbacks import ModelCheckpoint, EarlyStopping
 
 def createModel():
     df = pd.read_csv('nhlGameResults.csv.gz', compression='gzip', header=0, sep=',', quotechar='"')
-
+    
     X = df.drop(columns=['Date', 'Season', 'Visiting Team', 'Home Team', 'Margin', 'Home Win'], axis=1)
+    X = X.drop(columns=['Home Back to Back', 'Visiting Back to Back']) #Eventually add back to backs back in
     y = df['Home Win']
 
     del df

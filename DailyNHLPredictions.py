@@ -1,4 +1,4 @@
-from ScheduleAndScoresPull import getTodaysSchedule
+from ScheduleAndScoresPull import getTodaysSchedule, getTodaysSchedulePlayoffs
 from TeamStatsPull import getTeamStats
 import numpy as np
 import pandas as pd
@@ -36,7 +36,37 @@ def makePredictions(date):
     try:
         predictions = pd.DataFrame(data=model.predict(df), columns=['Prediction'])
     except:
-        raise Exception('No Games Today.')
+        try:
+            schedule_df = getTodaysSchedulePlayoffs(date)
+
+            schedule_df.rename(columns={'Visitor' : 'Visiting Team', 'Home' : 'Home Team'}, inplace=True)        
+            schedule_df.drop(columns=['G', 'G.1'], inplace = True)
+
+            if int(date.strftime("%m")) >= 9:
+                year = int(date.strftime("%Y")) + 1
+            else:
+                year = int(date.strftime("%Y")) 
+
+            stats_df = getTeamStats(year)
+
+            statscolumns = stats_df.select_dtypes(include=[np.number]).drop(columns='Year').columns
+
+            df = pd.merge(schedule_df, stats_df, left_on='Home Team', right_on='Team')
+            df = pd.merge(df, stats_df, left_on='Visiting Team', right_on='Team', suffixes=('Home', 'Visitor'))
+
+            del year, schedule_df, stats_df
+
+            for col in statscolumns:
+                    df[col + 'Diff'] = df[col + 'Home'] - df[col + 'Visitor']
+
+            df = df[df.columns.drop(list(df.filter(regex='Home$')))]
+            df = df[df.columns.drop(list(df.filter(regex='Visitor$')))]
+            df.set_index(['Date', 'Visiting Team', 'Home Team'], inplace=True)
+
+            predictions = pd.DataFrame(data=model.predict(df), columns=['Prediction'])
+        except:
+            raise Exception('No Games Today.')
+        
 
     del model
 
